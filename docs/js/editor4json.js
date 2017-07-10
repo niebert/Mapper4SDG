@@ -675,7 +675,8 @@ Editor4JSON.prototype.saveLS = function () {
           //console.log("pJSONDB '"+this.aName+"' is saved to Local Storage");
           //var vJSONstring = JSON.stringify(this.aData);
           var vJSONstring = JSON.stringify(this.getEditorData());
-          console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
+          //console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
+          console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring+"'");
           localStorage.setItem(this.aName,vJSONstring);
         } else {
           console.log("this.aData in Editor4JSON is NOT defined");

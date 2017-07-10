@@ -675,6 +675,7 @@ Editor4JSON.prototype.saveLS = function () {
           //console.log("pJSONDB '"+this.aName+"' is saved to Local Storage");
           //var vJSONstring = JSON.stringify(this.aData);
           var vJSONstring = JSON.stringify(this.getEditorData());
+          alert("aData.length="+this.aData.length);
           //console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
           console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring+"'");
           localStorage.setItem(this.aName,vJSONstring);

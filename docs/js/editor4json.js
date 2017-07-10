@@ -925,7 +925,7 @@ Editor4JSON.prototype.updateDOM = function () {
   };
   // validate the record against Schema JSON
   this.validate();
-
+  this.saveLS();
 };
 //----End of Method updateDOM Definition
 

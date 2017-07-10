@@ -628,7 +628,7 @@ Editor4JSON.prototype.loadLS = function () {
           localStorage.setItem("Mapper4SDG", JSON.stringify(this.getEditorData()));
   	  } else {
           //console.log("loadLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
-          console.log("loadLS('Mapper4SDG') JSONstring='"+vJSONstring+"'");
+          //console.log("loadLS('Mapper4SDG') JSONstring='"+vJSONstring+"'");
           try {
               this.setEditorData(JSON.parse(vJSONstring));
           } catch(e) {
@@ -678,7 +678,7 @@ Editor4JSON.prototype.saveLS = function () {
           var vJSONstring = JSON.stringify(this.getEditorData());
           //alert("aData.length="+this.aData.length);
           //console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
-          console.log("saveLS('Mapper4SDG') JSONstring='"+vJSONstring+"'");
+          //console.log("saveLS('Mapper4SDG') JSONstring='"+vJSONstring+"'");
           localStorage.setItem("Mapper4SDG",vJSONstring);
         } else {
           console.log("this.aData in Editor4JSON is NOT defined");

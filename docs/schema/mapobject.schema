@@ -63,6 +63,10 @@ vDataJSON["mapobject"] = {
         }
       }
     },
+    "url": {
+      "title": "URL:",
+      "type": "string",
+    },
     "date": {
       "title": "Created Date/Time:",
       "type": "string",

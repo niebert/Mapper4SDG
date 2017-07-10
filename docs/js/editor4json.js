@@ -673,7 +673,8 @@ Editor4JSON.prototype.saveLS = function () {
         console.log("JSON-DB '"+this.aName+"' is defined, JSONDB in  Local Storage");
         if (this.aData) {
           //console.log("pJSONDB '"+this.aName+"' is saved to Local Storage");
-          var vJSONstring = JSON.stringify(this.aData)
+          //var vJSONstring = JSON.stringify(this.aData);
+          var vJSONstring = JSON.stringify(this.getEditorData());
           console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
           localStorage.setItem(this.aName,vJSONstring);
         } else {

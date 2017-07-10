@@ -124,6 +124,12 @@
       // LINK PARAMETER: Evaluation link parameter in JSON Path
       var vLinkParam = new LinkParam();
       vLinkParam.init(document);
+      if (vLinkParam.exists("geolocation")) {
+        var vRecJSON = vEditor4JSON.aEditor.getValue();
+        vRecJSON["geolocation"] = vLinkParam.getValue("geolocation");
+        vEditor4JSON.aData[vEditor4JSON.current] = vRecJSON;
+        vEditor4JSON.aEditor.setValue(vRecJSON);
+      };
       if (vLinkParam.exists("schemaid")) {
         vSchemaID = vLinkParam.getValue("schemaid");
         if (vDataJSON.hasOwnProperty(vSchemaID)) {

@@ -620,15 +620,15 @@ Editor4JSON.prototype.loadLS = function () {
 
   if (typeof(Storage) != "undefined") {
       // Store
-      if (typeof(localStorage.getItem(this.aName)) !== undefined) {
-        console.log("JSON-DB '"+this.aName+"' try loading from Local Storage");
+      if (typeof(localStorage.getItem("Mapper4SDG")) !== undefined) {
+        console.log("JSON-DB 'Mapper4SDG' try loading from Local Storage");
         var vJSONstring = localStorage.getItem("Mapper4SDG");
   	  if (!vJSONstring) {
-          console.log("JSON-DB '"+this.aName+"' undefined in Local Storage.\nSave default as JSON");
+          console.log("JSON-DB 'Mapper4SDG' undefined in Local Storage.\nSave default as JSON");
           localStorage.setItem("Mapper4SDG", JSON.stringify(this.getEditorData()));
   	  } else {
           //console.log("loadLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
-          console.log("loadLS('"+this.aName+"') JSONstring='"+vJSONstring+"'");
+          console.log("loadLS('Mapper4SDG') JSONstring='"+vJSONstring+"'");
           try {
               this.setEditorData(JSON.parse(vJSONstring));
           } catch(e) {
@@ -636,7 +636,7 @@ Editor4JSON.prototype.loadLS = function () {
           };
   	  }
       } else {
-        console.log("loadLS('"+this.aName+"') is undefined in Local Storage.\nSave default as JSON");
+        console.log("loadLS('Mapper4SDG') is undefined in Local Storage.\nSave default as JSON");
         localStorage.setItem(vDBID, JSON.stringify(this.aData));
       };
   }	 else {
@@ -671,20 +671,20 @@ Editor4JSON.prototype.saveLS = function () {
   if (typeof(Storage) != "undefined") {
       // Store
       if (typeof(this.aData) != undefined) {
-        console.log("JSON-DB '"+this.aName+"' is defined, JSONDB in  Local Storage");
+        console.log("JSON-DB 'Mapper4SDG' is defined, JSONDB in  Local Storage");
         if (this.aData) {
           //console.log("pJSONDB '"+this.aName+"' is saved to Local Storage");
           //var vJSONstring = JSON.stringify(this.aData);
           var vJSONstring = JSON.stringify(this.getEditorData());
-          alert("aData.length="+this.aData.length);
+          //alert("aData.length="+this.aData.length);
           //console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
-          console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring+"'");
+          console.log("saveLS('Mapper4SDG') JSONstring='"+vJSONstring+"'");
           localStorage.setItem("Mapper4SDG",vJSONstring);
         } else {
           console.log("this.aData in Editor4JSON is NOT defined");
         }
       } else {
-        console.log("pJSONDB is undefined");
+        console.log("saveLS() - Editor4JSON.aData is undefined");
       };
     }	 else {
       console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");

@@ -181,6 +181,9 @@ Editor4JSON.prototype.init = function (pDOMID,pData,pSchema) {
 		this.aData = pData;
 	};
   this.loadLS(); // load aData from local storage if that exists
+	if (this.aData.length == 0) {
+		this.aData.push({"date":new Date().toLocaleString()});
+	};
   this.aDOMID = pDOMID;
   this.aName = pDOMID["name"] || "myjson";
   this.aEditorConfig = {
@@ -608,7 +611,7 @@ Editor4JSON.prototype.getLocalStorageID4Name = function (pName) {
 
 Editor4JSON.prototype.loadLS = function () {
   //----Debugging------------------------------------------
-  // console.log("js/editor4json.js - Call: loadLS()");
+  console.log("js/editor4json.js - Call: loadLS()");
   // alert("js/editor4json.js - Call: loadLS()");
   //----Create Object/Instance of Editor4JSON----
   //    var vMyInstance = new Editor4JSON();
@@ -889,8 +892,8 @@ Editor4JSON.prototype.check = function () {
 //#################################################################
 
 Editor4JSON.prototype.updateDOM = function () {
-  //----Debugging------------------------------------------
-  // console.log("js/editor4json.js - Call: updateDOM()");
+	//----Debugging------------------------------------------
+  console.log("js/editor4json.js - Call: updateDOM() current="+this.current);
   // alert("js/editor4json.js - Call: updateDOM()");
   //----Create Object/Instance of Editor4JSON----
   //    var vMyInstance = new Editor4JSON();
@@ -899,6 +902,13 @@ Editor4JSON.prototype.updateDOM = function () {
 
   //--- update current array index ------------
   var vID = this.aDOMID["current"] || "array_index";
+	if (this.aData.length > 0) {
+		if (this.current == -1) {
+			this.current = 0;
+		}
+	};
+	//----Debugging------------------------------------------
+  console.log("js/editor4json.js - Call: updateDOM() current="+this.current+"/"+this.aData.length);
   write2value(vID,(this.current+1));
   //--- update array length -------------------
   vID = this.aDOMID["length"] || "array_length";
@@ -936,10 +946,10 @@ Editor4JSON.prototype.setEditorData = function (pEditorData) {
   //    var vMyInstance = new Editor4JSON();
   //    vMyInstance.setEditorData(pEditorData);
   //-------------------------------------------------------
-
+	console.log("setEditorData() without this.aSchemaJSON");
   this.current = pEditorData["current"] || 0;
   this.aData = pEditorData["data"] || [];
-  this.aSchemaJSON = pEditorData["schema"] || vDataJSON["car"];
+  // this.aSchemaJSON = pEditorData["schema"] || vDataJSON["car"];
 
 };
 //----End of Method setEditorData Definition

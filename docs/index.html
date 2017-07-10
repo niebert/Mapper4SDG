@@ -88,9 +88,9 @@
     <table>
       <tr>
         <td>
-          <form id="mapselector" action="https://niebert.github.io/openlayer_selectlocation/selectlocation.html" method="GET">
+          <form id="mapselector"   onsubmit="vEditor4JSON.saveLS();alert('Check')" action="https://niebert.github.io/openlayer_selectlocation/selectlocation.html" method="GET">
             Callback URL: <input type="string" name="callback" value="https://niebert.github.io/Mapper4SDG/index.html">
-              <button type="submit"  onsubmit="vEditor4JSON.saveLS();alert('Check')" >
+              <button type="submit" >
                 <i class="fa fa-globe" aria-hidden="true"></i> Select Geolocation
             </button>
           </form>

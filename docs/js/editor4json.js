@@ -810,7 +810,7 @@ Editor4JSON.prototype.deleteRecord = function () {
 	this.check();
 	// if this.current is still in the range of indices of the array this.aData
 	// this could happen if last element in array was deleted
-  this.edit();
+	this.edit();
 
 };
 //----End of Method deleteRecord Definition
@@ -1022,15 +1022,15 @@ Editor4JSON.prototype.load = function (pFileID4DOM) {
 				//alert("textFromFileLoaded="+textFromFileLoaded);
 				vThis.aLoadedFile = fileToLoad.name;
 				vThis.importJSON(vTextFromFileLoaded);
+				vThis.edit();
+  				vThis.updateDOM();
+				vThis.saveLS();
 			};
 		//onload handler set now start loading the file
 		fileReader.readAsText(fileToLoad, "UTF-8");
 	} else {
 		alert("File is missing");
 	};
-	this.saveLS();
-  this.edit();
-  this.updateDOM();
 
 };
 //----End of Method load Definition

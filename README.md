@@ -13,7 +13,7 @@ https://github.com/niebert/Mapper4SDG/tree/master/docs
 
 ## UML Diagram of Editor4JSON Class
 
-![UML Diagram of JS Class Editor4JSON](https://niebert.github.io/niebert/Mapper4SDG/Editor4JSON_UML.tiff)
+![UML Diagram of JS Class Editor4JSON](https://niebert.github.io/Mapper4SDG/Editor4JSON_UML.png)
 
 ## JSON to Schema Generator
 

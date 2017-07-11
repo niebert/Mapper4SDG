@@ -3,6 +3,8 @@ created Javascript Class Creator JSCC 2017/07/06 6:50:57
 https://niebert.github.io/JavascriptClassCreator
 File: js/editor4json.js
 
+[GitHub Repository Mapper4SDG](https://www.github.com/niebert/Mapper4SDG)
+
 ### Attributes: Editor4JSON
 
 #### aEditor:JSONEditor

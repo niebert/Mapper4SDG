@@ -47,6 +47,9 @@
  </head>
   <body style="margin:20px">
     <!-- this is hidden input file div to manage a file upload of a JSON into the browser -->
+    <h2>
+    	<a href="https://www.github.com/niebert/Mapper4SDG" target="_blank">Mapper</a> for <a href="" target="_blank">Sustainible Development Goals</a>
+    </h2>
     <div data-role="fieldcontain" style="display:none">
          <input type="file" id="fileJSON" name="fileJSON" value="Select JSON File" id="fileJSON" onchange="vEditor4JSON.load(this.id)"/>
     </div>
@@ -84,7 +87,7 @@
 		<button id='bDeleteRecord' style="color: white;background-color: #c10303"  onclick="vEditor4JSON.deleteAsk();return false">
 			<i class="fa fa-minus-square" aria-hidden="true"></i> Delete
 		</button>
-    <i id='valid_indicator' style="width:50px">valid or not valid</i>
+    <i id='valid_indicator' style="width:50px;display:none">valid or not valid</i>
     <table>
       <tr>
         <td>
@@ -95,6 +98,8 @@
             </button>
           </form>
         </td>
+    </tr>
+    <tr>
         <td>
           <div class="text" id="load_filename"></div>
         </td>

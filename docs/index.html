@@ -39,7 +39,7 @@
    <!-- BEGIN: load JSON data -->
     <script src="db/data.js"></script>
     <!-- END:  load JSON data -->
-    <!-- BEGIN: load JSON schema -->
+    <!-- BEGIN: load JSON schema - Schema is stored in vDataJSON["mapobject"] -->
     <script src="schema/mapobject.schema"></script>
     <!-- END:  load JSON schema -->
     <script>
@@ -62,7 +62,7 @@
 		<button id='bSaveJSON' style="color: white;background-color: #225988"  onclick="vEditor4JSON.save();return false">
 			<i class="fa fa-floppy-o" aria-hidden="true"></i> Save
 		</button>
-    &nbsp;
+        &nbsp;
 		&nbsp;
 
 		<button id='bFastBackward' onclick="vEditor4JSON.first();return false">
@@ -92,7 +92,8 @@
       <tr>
         <td>
           <form id="mapselector" action="https://niebert.github.io/openlayer_selectlocation/selectlocation.html" method="GET">
-            Callback URL: <input type="string" name="callback" value="https://niebert.github.io/Mapper4SDG/index.html">
+            <!-- Set the Callback URL for the OpenLayers location selector here: --> 
+            <input type="string" name="callback" value="https://niebert.github.io/Mapper4SDG/index.html" style="display:none">
               <button type="submit" >
                 <i class="fa fa-globe" aria-hidden="true"></i> Select Geolocation
             </button>
@@ -136,11 +137,13 @@
           vSchemaDefined = true;
         }
       };
+      //-------------------------------------------------------
+      // LINK PARAMETER: Read a remote schema via Link Parameter
       if (vLinkParam.exists("schema")) {
         vSchemaString = vLinkParam.getValue("schema");
         try {
           vSchemaJSON = JSON.parse(vSchemaString);
-          console.log("Loaded Schema via LinkParameter for SchemaID='"+vSchemaID+"'");
+          console.log("Loaded Schema via LinkParameter schema='...'");
           vSchemaDefined = true;
         } catch (e) {
           alert(e);

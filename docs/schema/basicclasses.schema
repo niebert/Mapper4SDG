@@ -1,9 +1,0 @@
-vDataJSON["basicclasses"] = {
-  "type": "object",
-  "title": "Basic Classes",
-  "format": "table",
-  "items": {
-    "type": "string",
-    "default" : ""
-  }
-}

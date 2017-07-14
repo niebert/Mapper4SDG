@@ -1,4 +1,0 @@
-vDataJSON["class"] = {
-  "title": "Class Schema",
-  "$ref": "schema/class_schema.json"
-}

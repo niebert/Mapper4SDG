@@ -64,8 +64,8 @@ function Editor4JSON () {
 	this.aSchemaJSON = null;
 	//---PUBLIC: aEditURL (String): the attribute 'aEditURL' stores the URL to the JSON Editor developed by Jeremy Dorn
 	this.aEditURL = "";
-	//---PUBLIC: aDOMID (Hash): the attribute 'aDOMID' stores in ids of DOM element, e.g. editor_holder, valid ...
-	this.aDOMID = null;
+	//---PUBLIC: aConfig (Hash): the attribute 'aConfig' stores config variables e.g. ids of DOM element, e.g. editor_holder, valid ...
+	this.aConfig = {};
 
   //---------------------------------------------------------------------
   //---Methods of Class "Editor4JSON()"
@@ -130,6 +130,9 @@ function Editor4JSON () {
 	//----PUBLIC Method: Editor4JSON.deleteAsk()-----
 	// deleteAsk()
 	//	deleteAsk() asks the user if deleteRecord() should be performed
+	//----PUBLIC Method: Editor4JSON.initAsk()-----
+	// initAsk()
+	//	initAsk() asks the user if the JSON database should be initialized.
 	//----PUBLIC Method: Editor4JSON.check()-----
 	// check()
 	//	checks if the index of the array is between 0 and this.aData.lenth
@@ -141,7 +144,10 @@ function Editor4JSON () {
 	//	setEditorData() sets the Editor with current, data and schema
 	//----PUBLIC Method: Editor4JSON.getEditorData():Hash-----
 	// getEditorData()  Return: Hash
-	//	getEditorData() create a Hash for this.current, this.aData and this.aSchema
+	//	getEditorData() create a Hash for this.current, this.aData and this.aSchemaID
+	//----PUBLIC Method: Editor4JSON.setEditorData(pData):Boolean-----
+	// setEditorData(pData)  Return: Boolean
+	//	setEditorData(pData) sets the Hash for this.current, this.aData and this.aSchema
 
 
 
@@ -167,7 +173,7 @@ function Editor4JSON () {
 //# last modifications 2017/06/02 20:56:06
 //#################################################################
 
-Editor4JSON.prototype.init = function (pDOMID,pData,pSchema) {
+Editor4JSON.prototype.init = function (pConfig,pData,pSchema) {
   //----Debugging------------------------------------------
   // console.log("js/editor4json.js - Call: init(pID4DOM:Hash,pData:Array,pSchema:Hash)");
   // alert("js/editor4json.js - Call: init(pID4DOM:Hash,pData:Array,pSchema:Hash)");
@@ -175,17 +181,25 @@ Editor4JSON.prototype.init = function (pDOMID,pData,pSchema) {
   //    var vMyInstance = new Editor4JSON();
   //    vMyInstance.init(pID4DOM,pData,pSchema);
   //-------------------------------------------------------
-
+	console.log("Editor4JSON.init()-Call");
   this.aSchema = pSchema;
 	if (pData) {
 		this.aData = pData;
 	};
-  this.loadLS(); // load aData from local storage if that exists
+	this.loadLS(); // load aData from local storage if that exists
+	if (isArray(this.aData)) {
+		console.log("aData is an Array");
+	} else {
+		console.log("aData = new Array()");
+		this.aData = [];
+	}
 	if (this.aData.length == 0) {
-		this.aData.push({"date":new Date().toLocaleString()});
+		//this.aData.push({"date":new Date().toLocaleString()});
+		this.aData.push(this.getEmptyRecord());
 	};
-  this.aDOMID = pDOMID;
-  this.aName = pDOMID["name"] || "myjson";
+  this.aConfig = pConfig;
+  this.aName = pConfig["name"] || "myjson"; // basename for export filename
+	console.log("Set Editor4JSON Configuration");
   this.aEditorConfig = {
           // Enable fetching schemas via ajax
           ajax: true,
@@ -197,7 +211,7 @@ Editor4JSON.prototype.init = function (pDOMID,pData,pSchema) {
           disable_edit_json: true,
 
           // Disable additional properties
-          no_additional_properties: false,
+          no_additional_properties: true,
 
           // Require all properties by default
           required_by_default: true
@@ -207,24 +221,55 @@ Editor4JSON.prototype.init = function (pDOMID,pData,pSchema) {
       this.aEditorConfig.startval = this.aData[0];
   };
   // create the editor
-  var vEditorDOM = document.getElementById(this.aDOMID["editor"]);
-  if (vEditorDOM) {
-      this.aEditor = new JSONEditor(vEditorDOM,this.aEditorConfig);
-  } else {
-      console.log("ERROR: Editor DOM with ID=‘"+this.aDOMID["editor"]+"' does not exist!")
-  };
-
-  // Hook up the validation indicator to update its
-  // status whenever the editor changes
-  this.aEditor.on('change',function() {
-          // upadte the currect record in large array
-          vEditor4JSON.onChange()
-        });
+	console.log("Create the JSONEditor");
+	this.createEditor();
 	this.check();
 	this.updateDOM();
 };
 //----End of Method init Definition
 
+//#################################################################
+//# PUBLIC Method: init()
+//#    used in Class: Editor4JSON
+//# Parameter:
+//#    pID4DOM:Hash
+//#    pData:Array
+//#    pSchema:Hash
+//# Comment:
+//#    pDOMID is hash with DOM ids that define the DOM element where the JSON editor is injected (editor_holder of JSON editor).
+//#    pData is the large array that is edited and
+//#    pSchema defines the JSON schema of a single record in the large thisarray
+//#
+//# created with JSCC  2017/03/05 18:13:28
+//# last modifications 2017/06/02 20:56:06
+//#################################################################
+
+Editor4JSON.prototype.createEditor = function () {
+  //----Debugging------------------------------------------
+  // console.log("js/editor4json.js - Call: init(pID4DOM:Hash,pData:Array,pSchema:Hash)");
+  // alert("js/editor4json.js - Call: init(pID4DOM:Hash,pData:Array,pSchema:Hash)");
+  //----Create Object/Instance of Editor4JSON----
+  //    var vMyInstance = new Editor4JSON();
+  //    vMyInstance.init(pID4DOM,pData,pSchema);
+  //-------------------------------------------------------
+	if (!this.aEditor) {
+		console.log("Editor DOM: "+this.aConfig["editor"]);
+		var vEditorDOM = document.getElementById(this.aConfig["editor"]);
+		if (vEditorDOM) {
+			this.aEditor = new JSONEditor(vEditorDOM,this.aEditorConfig);
+		} else {
+				console.log("ERROR: Editor DOM with ID=‘"+this.aConfig["editor"]+"' does not exist!")
+		};
+
+		// Hook up the validation indicator to update its
+		// status whenever the editor changes
+		this.aEditor.on('change',function() {
+						// upadte the currect record in large array
+						vEditor4JSON.onChange()
+					});
+	}
+}
+//----End of Method createEditor() Definition
 
 //#################################################################
 //# PUBLIC Method: prev()
@@ -406,7 +451,12 @@ Editor4JSON.prototype.edit = function () {
   //    var vMyInstance = new Editor4JSON();
   //    vMyInstance.edit();
   //-------------------------------------------------------
-
+	if (this.aEditor) {
+		console.log("this.aEditor exists");
+	} else {
+		console.log("this.aEditor is undefined, Editor4JSON.aEditor will be created");
+		//this.createEditor();
+	}
   // edit creates at least one record in the array this.aData
   if (this.aData.length == 0) {
       // push an empty JSON hash
@@ -420,6 +470,39 @@ Editor4JSON.prototype.edit = function () {
   this.aEditor.setValue(this.aData[this.current]);
   this.updateDOM();
 
+};
+//----End of Method edit Definition
+
+//#################################################################
+//# PUBLIC Method: getEmptyRecord()
+//#    used in Class: Editor4JSON
+//# Parameter:
+//#
+//# Comment:
+//#    create an empty record for the JSON editor.
+//#
+//# created with JSCC  2017/03/05 18:13:28
+//# last modifications 2017/06/02 20:56:06
+//#################################################################
+
+Editor4JSON.prototype.getEmptyRecord = function () {
+  //----Debugging------------------------------------------
+  // console.log("js/editor4json.js - Call: edit()");
+  // alert("js/editor4json.js - Call: edit()");
+  //----Create Object/Instance of Editor4JSON----
+  //    var vMyInstance = new Editor4JSON();
+  //    vMyInstance.edit();
+  //-------------------------------------------------------
+
+  // edit creates at least one record in the array this.aData
+  return {
+		"title4map": "",
+ 		"geolocation": "",
+ 		"SDG": [],
+ 		"url": "",
+ 		"comment": "",
+		"date":new Date().toLocaleString()
+	}
 };
 //----End of Method edit Definition
 
@@ -448,9 +531,10 @@ Editor4JSON.prototype.setSchema = function (pSchemaJSON) {
   this.aSchemaJSON = pSchemaJSON;
   if (this.aEditor) {
       this.aEditor.destroy();
-      document.getElementById(this.aDOMID["editor"]).innerHTML = "";
+      document.getElementById(this.aConfig["editor"]).innerHTML = "";
   };
-  this.init(this.aDOMID,this.aData,this.aSchemaJSON);
+	console.log("setSchema in Editor4JSON");
+  this.init(this.aConfig,this.aData,this.aSchemaJSON);
 
 };
 //----End of Method setSchema Definition
@@ -617,27 +701,40 @@ Editor4JSON.prototype.loadLS = function () {
   //    var vMyInstance = new Editor4JSON();
   //    vMyInstance.loadLS();
   //-------------------------------------------------------
-
+	// vDataID defined as global variable
+	var vDBID = this.aConfig["dataid"];
   if (typeof(Storage) != "undefined") {
       // Store
-      if (typeof(localStorage.getItem("Mapper4SDG")) !== undefined) {
-        console.log("JSON-DB 'Mapper4SDG' try loading from Local Storage");
-        var vJSONstring = localStorage.getItem("Mapper4SDG");
-  	  if (!vJSONstring) {
-          console.log("JSON-DB 'Mapper4SDG' undefined in Local Storage.\nSave default as JSON");
-          localStorage.setItem("Mapper4SDG", JSON.stringify(this.getEditorData()));
-  	  } else {
-          //console.log("loadLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
-          //console.log("loadLS('Mapper4SDG') JSONstring='"+vJSONstring+"'");
-          try {
-              this.setEditorData(JSON.parse(vJSONstring));
-          } catch(e) {
-              alert(e)
-          };
-  	  }
+			if (typeof(localStorage.getItem(vDataID)) !== undefined) {
+        console.log("loadLS() - JSON-DB '"+vDataID+"' try loading from Local Storage");
+        var vJSONstring = localStorage.getItem(vDataID);
+				if (!vJSONstring) {
+	          console.log("loadLS() - JSON-DB '"+vDataID+"' undefined in Local Storage.\nSave default as JSON");
+	          localStorage.setItem(vDataID, JSON.stringify(this.getEditorData()));
+	  	  } else {
+	          //console.log("loadLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
+						var vSuccess = true;
+						var vEditorData;
+						console.log("loadLS('"+vDataID+"') JSONstring='"+vJSONstring+"'");
+	          try {
+							//this.setEditorData(JSON.parse(vJSONstring));
+							vEditorData = JSON.parse(vJSONstring);
+						} catch(e) {
+	            alert(e);
+							vSuccess = false;
+	        	};
+						if (vSuccess == true) {
+							localStorage.setItem(vDataID, JSON.stringify(vEditorData));
+							this.aData = vEditorData["data"];
+							this.current = vEditorData["current"];
+							this.aConfig["dataid"] = vEditorData["dataid"];
+							this.aConfig["schemaid"] = vEditorData["schemaid"];
+							console.log("Save loaded JSON '"+vDataID+"' in localStorage");
+						}
+	  	  }
       } else {
-        console.log("loadLS('Mapper4SDG') is undefined in Local Storage.\nSave default as JSON");
-        localStorage.setItem(vDBID, JSON.stringify(this.aData));
+        console.log("loadLS('"+vDataID+"') is undefined in Local Storage.\nSave default as JSON");
+        localStorage.setItem(vDataID, JSON.stringify(this.aData));
       };
   }	 else {
       console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
@@ -667,24 +764,24 @@ Editor4JSON.prototype.saveLS = function () {
   //    var vMyInstance = new Editor4JSON();
   //    vMyInstance.saveLS();
   //-------------------------------------------------------
-
+	var vDBID = this.aConfig["dataid"];
   if (typeof(Storage) != "undefined") {
       // Store
       if (typeof(this.aData) != undefined) {
-        console.log("JSON-DB 'Mapper4SDG' is defined, JSONDB in  Local Storage");
+        console.log("JSON-DB '"+vDataID+"' is defined, JSONDB in  Local Storage");
         if (this.aData) {
           //console.log("pJSONDB '"+this.aName+"' is saved to Local Storage");
           //var vJSONstring = JSON.stringify(this.aData);
           var vJSONstring = JSON.stringify(this.getEditorData());
           //alert("aData.length="+this.aData.length);
           //console.log("saveLS('"+this.aName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
-          //console.log("saveLS('Mapper4SDG') JSONstring='"+vJSONstring+"'");
-          localStorage.setItem("Mapper4SDG",vJSONstring);
+          console.log("saveLS('"+vDataID+"') Stored in Local Storage JSONstring='"+vJSONstring+"'");
+          localStorage.setItem(vDataID,vJSONstring);
         } else {
-          console.log("this.aData in Editor4JSON is NOT defined");
+          console.log("this.aData in Editor4JSON is NOT defined. '"+vDataID+"' not stored in LocalStorage.");
         }
       } else {
-        console.log("saveLS() - Editor4JSON.aData is undefined");
+        console.log("saveLS('"+vDataID+"') - Editor4JSON.aData is undefined");
       };
     }	 else {
       console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
@@ -724,7 +821,7 @@ Editor4JSON.prototype.validate = function () {
   if (errors.length) {
     vValid = false;
   };
-  var vID = this.aDOMID['valid_indicator'] || 'valid_indicator';
+  var vID = this.aConfig['valid_indicator'] || 'valid_indicator';
   var indicator = document.getElementById(vID);
   if (!indicator) {
       console.log("DOM element '"+vID+"' does not exist")
@@ -847,6 +944,43 @@ Editor4JSON.prototype.deleteAsk = function () {
 };
 //----End of Method deleteAsk Definition
 
+//#################################################################
+//# PUBLIC Method: initAsk()
+//#    used in Class: Editor4JSON
+//# Parameter:
+//#
+//# Comment:
+//#    initAsk() asks the user if deleteRecord() should be performed
+//#
+//# created with JSCC  2017/03/05 18:13:28
+//# last modifications 2017/06/02 20:56:06
+//#################################################################
+
+Editor4JSON.prototype.initAsk = function () {
+  //----Debugging------------------------------------------
+  // console.log("js/editor4json.js - Call: initAsk()");
+  // alert("js/editor4json.js - Call: initAsk()");
+  //----Create Object/Instance of Editor4JSON----
+  //    var vMyInstance = new Editor4JSON();
+  //    vMyInstance.initAsk();
+  //-------------------------------------------------------
+
+  var vOK = confirm("Do you really want to initialize the JSON-DB '"+this.aConfig["dataid"]+"'?");
+  if (vOK == true) {
+		var vSampleOK = confirm("Do you want to initialize the JSON-DB '"+this.aConfig["dataid"]+"' with sample data?");
+		if (vSampleOK == true) {
+			this.aData = vDataJSON[this.aConfig["dataid"]];
+			alert("JSON-DB initalized with sample data!");
+		} else {
+			this.aData = [];
+			alert("All data deleted in JSON-DB!");
+		};
+		this.first();
+  } else {
+    console.log("initialize JSON-DB cancelled")
+  };
+};
+//----End of Method initAsk Definition
 
 //#################################################################
 //# PUBLIC Method: check()
@@ -905,7 +1039,7 @@ Editor4JSON.prototype.updateDOM = function () {
   //-------------------------------------------------------
 
   //--- update current array index ------------
-  var vID = this.aDOMID["current"] || "array_index";
+  var vID = this.aConfig["current"] || "array_index";
 	if (this.aData.length > 0) {
 		if (this.current == -1) {
 			this.current = 0;
@@ -915,11 +1049,11 @@ Editor4JSON.prototype.updateDOM = function () {
   console.log("js/editor4json.js - Call: updateDOM() current="+this.current+"/"+this.aData.length);
   write2value(vID,(this.current+1));
   //--- update array length -------------------
-  vID = this.aDOMID["length"] || "array_length";
+  vID = this.aConfig["length"] || "array_length";
   write2innerHTML(vID,this.aData.length);
   //--- update title ID='record_title'---------
-  if (this.aDOMID.hasOwnProperty("title")) {
-      vID = this.aDOMID["title"];
+  if (this.aConfig.hasOwnProperty("title")) {
+      vID = this.aConfig["title"];
       if (this.aData[this.current].hasOwnProperty(vID)) {
           write2innerHTML(vID,this.aData.length);
       };
@@ -981,13 +1115,49 @@ Editor4JSON.prototype.getEditorData = function () {
   //-------------------------------------------------------
 	var vEditorData = {
 		"current" : this.current,
-		"data" : this.aData,
-		"schema" : this.aSchemaJSON
+		"dataid" : this.aConfig["dataid"],
+		"schemaid" : this.aConfig["schemaid"],
+		"data" : this.aData
 	};
 	return vEditorData;
 };
 //----End of Method getEditorData Definition
 
+
+//#################################################################
+//# PUBLIC Method: getEditorData()
+//#    used in Class: Editor4JSON
+//# Parameter: pData: JSON Data, pCurrent:Integer selected record starting with 0.
+//#            pConfig: the config hash of the JSON Editor
+//# Comment:
+//#    getEditorData() create a Hash for this.current, this.aData and this.aSchema
+//# Return: Hash
+//# created with JSCC  2017/03/05 18:13:28
+//# last modifications 2017/07/06 9:24:10
+//#################################################################
+
+Editor4JSON.prototype.setEditorData = function (pData,pCurrent,pConfig) {
+  //----Debugging------------------------------------------
+  // console.log("js/editor4json.js - Call: setEditorData():Hash");
+  // alert("js/editor4json.js - Call: setEditorData()");
+  //----Create Object/Instance of Editor4JSON----
+  //    var vMyInstance = new Editor4JSON();
+  //    vMyInstance.setEditorData(pData);
+  //-------------------------------------------------------
+	this.aData = pData;
+	if (pCurrent) {
+		this.current = pCurrent;
+		this.edit();
+	} else {
+		this.first();
+	};
+	if (pConfig) {
+		this.aConfig["dataid"] = pConfig["dataid"];
+		this.aConfig["schemaid"] = pConfig["schemaid"];
+	}
+	alert("Data initialized!")
+};
+//----End of Method getEditorData Definition
 
 //#################################################################
 //# PUBLIC Method: load(pFileID4DOM)
@@ -1023,7 +1193,7 @@ Editor4JSON.prototype.load = function (pFileID4DOM) {
 				vThis.aLoadedFile = fileToLoad.name;
 				vThis.importJSON(vTextFromFileLoaded);
 				vThis.edit();
-  				vThis.updateDOM();
+  			vThis.updateDOM();
 				vThis.saveLS();
 			};
 		//onload handler set now start loading the file
@@ -1085,7 +1255,8 @@ Editor4JSON.prototype.add = function () {
   //    vMyInstance.add();
   //-------------------------------------------------------
 
-  this.aData.push({"date":new Date().toLocaleString()});
+	//this.aData.push({"date":new Date().toLocaleString()});
+	this.aData.push(this.getEmptyRecord());
   this.current = this.aData.length - 1; // this is the index of the last new element
   this.edit();
   this.updateDOM(); // updateDOM()-call necessary because length and current index changed due to add-click of user

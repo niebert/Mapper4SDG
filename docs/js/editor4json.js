@@ -903,14 +903,12 @@ Editor4JSON.prototype.deleteRecord = function () {
   this.check(); // is in the range of indices of the array this.aData
   if (this.current > -1) {
       this.aData.splice(this.current, 1);
-			//save changes to Local Storage
-			this.saveLS();
-  };
+	};
 	this.check();
 	// if this.current is still in the range of indices of the array this.aData
 	// this could happen if last element in array was deleted
+	this.saveLS(); //save changes to Local Storage
 	this.edit();
-
 };
 //----End of Method deleteRecord Definition
 

@@ -903,6 +903,8 @@ Editor4JSON.prototype.deleteRecord = function () {
   this.check(); // is in the range of indices of the array this.aData
   if (this.current > -1) {
       this.aData.splice(this.current, 1);
+			//save changes to Local Storage
+			this.saveLS();
   };
 	this.check();
 	// if this.current is still in the range of indices of the array this.aData
@@ -976,7 +978,9 @@ Editor4JSON.prototype.initAsk = function () {
 			alert("All data deleted in JSON-DB!");
 		};
 		this.first();
-  } else {
+		//save changes to Local Storage
+		this.saveLS();
+	} else {
     console.log("initialize JSON-DB cancelled")
   };
 };
@@ -1258,7 +1262,8 @@ Editor4JSON.prototype.add = function () {
 	//this.aData.push({"date":new Date().toLocaleString()});
 	this.aData.push(this.getEmptyRecord());
   this.current = this.aData.length - 1; // this is the index of the last new element
-  this.edit();
+	this.saveLS(); //save changes to Local Storage
+	this.edit();
   this.updateDOM(); // updateDOM()-call necessary because length and current index changed due to add-click of user
 
 };

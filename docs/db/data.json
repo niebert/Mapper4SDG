@@ -1,17 +1,17 @@
 [
     {
-        "title4map": "SDG Activity in London",
+        "title4map": "London",
         "geolocation": "-0.14467470703124907,51.493889053694915",
         "SDG": [
             "1",
             "3"
         ],
-        "url": "",
+        "url": "https://en.wikipedia.org/wiki/London",
         "date": "3.9.2017, 07:03:16",
         "comment": "London created a Open Innovation Ecosystem for Clean Water and Sanitation"
     },
     {
-        "title4map": "SDG Activity in Brimingham",
+        "title4map": "SBrimingham",
         "geolocation": "-1.81185,51.243141",
         "SDG": [
             "7",

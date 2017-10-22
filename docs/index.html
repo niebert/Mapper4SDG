@@ -31,6 +31,10 @@
      var vDataJSON = {};
      var vDataID =  "mapicons"; // JSON ID defined in db/data.js
      var vSchemaID =  "mapicons_schema"; // file defined in schema/mapobject.schema
+     //-------------------------------------------------------
+     //---- Create JSON Editor -------------------------------
+     //-------------------------------------------------------
+     var vEditor4JSON = new Editor4JSON();
      // Set the default CSS theme and icon library globally
      JSONEditor.defaults.theme = 'bootstrap3';
      JSONEditor.defaults.iconlib = 'fontawesome4';
@@ -230,9 +234,8 @@
         "length" : "array_length"
       };
       //-------------------------------------------------------
-      //---- Create JSON Editor -------------------------------
+      //---- Init JSON Editor -------------------------------
       //-------------------------------------------------------
-      var vEditor4JSON = new Editor4JSON();
       // console.log(JSON.stringify(vInitData,null,4));
       console.log("before init()");
       vEditor4JSON.init(vConfig,vInitData,vSchemaJSON);
@@ -255,6 +258,7 @@
         document.getElementById("mymapcenter").value = vLinkParam.getValue("geolocation");
         // update the selected current record in JSON with the selected geolocation
         var vRecJSON = vEditor4JSON.aEditor.getValue();
+        console.log("vRecJSON:\n"+JSON.stringify(vRecJSON,null,4));
         vRecJSON["geolocation"] = vLinkParam.getValue("geolocation");
         vEditor4JSON.aData[vEditor4JSON.current] = vRecJSON;
         vEditor4JSON.aEditor.setValue(vRecJSON);

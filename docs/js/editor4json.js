@@ -182,6 +182,7 @@ Editor4JSON.prototype.init = function (pConfig,pData,pSchema) {
   //    vMyInstance.init(pID4DOM,pData,pSchema);
   //-------------------------------------------------------
 	console.log("Editor4JSON.init()-Call");
+	//console.log("Schmema JSON\n"+JSON.stringify(pSchema,null,4));
   this.aSchema = pSchema;
 	if (pData) {
 		this.aData = pData;
@@ -217,9 +218,15 @@ Editor4JSON.prototype.init = function (pConfig,pData,pSchema) {
           required_by_default: true
         };
   // Seed the form with a starting value for the Editor if pData contains at least one record
-   if (this.aData.length > 0) {
-      this.aEditorConfig.startval = this.aData[0];
-  };
+  if (this.aData.length > 0) {
+			if (this.current < this.aData.length) {
+				console.log("JSONEditor: init with record "+(this.current+1));
+				this.aEditorConfig.startval = this.aData[this.current];
+			} else {
+				console.log("JSONEditor: init with record 1");
+				this.aEditorConfig.startval = this.aData[0];
+			}
+	};
   // create the editor
 	console.log("Create the JSONEditor");
 	this.createEditor();
@@ -229,7 +236,7 @@ Editor4JSON.prototype.init = function (pConfig,pData,pSchema) {
 //----End of Method init Definition
 
 //#################################################################
-//# PUBLIC Method: init()
+//# PUBLIC Method: createEditor()
 //#    used in Class: Editor4JSON
 //# Parameter:
 //#    pID4DOM:Hash
@@ -246,11 +253,11 @@ Editor4JSON.prototype.init = function (pConfig,pData,pSchema) {
 
 Editor4JSON.prototype.createEditor = function () {
   //----Debugging------------------------------------------
-  // console.log("js/editor4json.js - Call: init(pID4DOM:Hash,pData:Array,pSchema:Hash)");
-  // alert("js/editor4json.js - Call: init(pID4DOM:Hash,pData:Array,pSchema:Hash)");
+  // console.log("js/editor4json.js - Call: createEditor())");
+  // alert("js/editor4json.js - Call: createEditor()");
   //----Create Object/Instance of Editor4JSON----
   //    var vMyInstance = new Editor4JSON();
-  //    vMyInstance.init(pID4DOM,pData,pSchema);
+  //    vMyInstance.createEditor();
   //-------------------------------------------------------
 	if (!this.aEditor) {
 		console.log("Editor DOM: "+this.aConfig["editor"]);
@@ -646,8 +653,9 @@ Editor4JSON.prototype.exportSchema = function () {
   //    var vMyInstance = new Editor4JSON();
   //    vMyInstance.exportSchema();
   //-------------------------------------------------------
-
-  this.export(this.aName+"_schema.json",this.aSchemaJSON)
+	// Debugging: this.aSchemaJSON is null HERE!??
+	//this.export(this.aName+"_schema.json",this.aSchemaJSON)
+	this.export(this.aName+"_schema.json",vSchemaJSON)
 
 };
 //----End of Method exportSchema Definition

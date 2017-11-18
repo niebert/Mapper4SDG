@@ -601,7 +601,6 @@ Editor4JSON.prototype.export = function (pFilename,pJSON) {
   // method saveAs() is defined in FileSaver.js so import filesaver.js and blob.js to your Javascript project
   saveAs(file,pFilename);
 
-
 };
 //----End of Method export Definition
 

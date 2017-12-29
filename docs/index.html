@@ -164,21 +164,24 @@
     </table>
     <hr>
 	</div>
-  <div id="divFooter"  align="center">
-    <font size="-1">
-      <b><a href="https://github.com/niebert/Mapper4SDG/archive/master.zip" target="_blank">Download</a></b>
-      <hr/>
-      Mapper4SDG by NieBert as <a href="https://www.github.com/niebert/Mapper4SDG" target="_blank">GitHub (2017)</a><br/>
-      Mapper4SDG used <a href="https://github.com/jdorn/json-editor" target="_blank">JSON Editor by Jeremy Dorn on GitHub</a>
-    </font>
-  </div>
+    <!-- EDITOR HOLDER -->
     <div id='editor_holder' style="margin-right: 30px; margin-left: 30px"></div>
+    <!-- FOOTER BUTTONS -->
     <div id='button_holder' style="margin:20px">
       <button id='bExportJSON' onclick="vEditor4JSON.exportData();return false">Export JSON</button>
       <button id='bExportSchema' onclick="vEditor4JSON.exportSchema();return false">Export JSON Schema</button>
       <button id='bWinClose' onclick="return2CallBack();return false" style="color: white;background-color: #225988;display:none">Close</button>
       <button id='bExportEditorContent'>Export Editor innerHTML - Debug</button>
       <button id='view' onclick="console.log(JSON.stringify(editor.getValue()));return false" style="display:none">View (console.log)</button>
+    </div>
+    <!-- FOOTER of HTML Page -->
+    <div id="divFooter"  align="center">
+      <font size="-1">
+        <b><a href="https://github.com/niebert/Mapper4SDG/archive/master.zip" target="_blank">Download</a></b>
+        <hr/>
+        Mapper4SDG by NieBert as <a href="https://www.github.com/niebert/Mapper4SDG" target="_blank">GitHub (2017)</a><br/>
+        Mapper4SDG used <a href="https://github.com/jdorn/json-editor" target="_blank">JSON Editor by Jeremy Dorn on GitHub</a>
+      </font>
     </div>
     <script>
       //-------------------------------------------------------

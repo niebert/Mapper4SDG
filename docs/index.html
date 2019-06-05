@@ -157,7 +157,21 @@
         </td>
     </tr>
     <tr>
-        <td>
+      <td colspan="4">
+        &nbsp;
+        <button type="button"  style="color: white;background-color: #225988" onclick="createMapLink();return false">
+            <i class="fa fa-globe" aria-hidden="true"></i> Create Map Link
+        </button>
+      <!--
+      </td>
+      <td>
+      -->
+        <input type="text" id="maplink" value="" size="80">
+      </td>
+
+  </tr>
+    <tr>
+        <td colspan="4">
           <div class="text" id="load_filename"></div>
         </td>
       </tr>
@@ -177,9 +191,9 @@
     <!-- FOOTER of HTML Page -->
     <div id="divFooter"  align="center">
       <font size="-1">
-        <b><a href="https://github.com/niebert/Mapper4SDG/archive/master.zip" target="_blank">Download</a></b>
+        <b><a href="https://github.com/niebert/Mapper4SDG/archive/master.zip" target="_blank">Download Mapper4SDG</a></b>
         <hr/>
-        Mapper4SDG by NieBert as <a href="https://www.github.com/niebert/Mapper4SDG" target="_blank">GitHub (2017)</a><br/>
+        Mapper4SDG by NieBert as <a href="https://www.github.com/niebert/Mapper4SDG" target="_blank">GitHub (2019)</a><br/>
         Mapper4SDG used <a href="https://github.com/jdorn/json-editor" target="_blank">JSON Editor by Jeremy Dorn on GitHub</a>
       </font>
     </div>
@@ -219,6 +233,7 @@
       // LINK PARAMETER (schema): Read a remote schema via Link Parameter
       if (vLinkParam.exists("jsondata")) {
         vDataString = vLinkParam.getValue("jsondata");
+        vDataString = decodeURIComponent(vDataString);
         var vJSON;
         try {
           vJSON = JSON.parse(vDataString);

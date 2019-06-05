@@ -8,13 +8,40 @@ function el4id(pID) {
 }
 
 function copyMapCenterZoom() {
-  el4id("viewmapcenter").value = el4id("mymapcenter").value
-  el4id("viewzoom").value = el4id("myzoom").value
+  console.log("copyMapCenterZoom");
+  if (el4id("mymapcenter")) {
+    console.log("mymapcenter="+el4id("mymapcenter").value);
+    el4id("viewmapcenter").value = el4id("mymapcenter").value;
+  } else {
+    console.error("CALL: copyMapCenterZoom():16 - el4id('mymapcenter') is undefined - no value can be accessed!");
+  };
+  el4id("viewzoom").value = el4id("myzoom").value || "10";
+  console.log("copyMapCenterZoom after");
+
+}
+
+
+
+function createMapLink() {
+  console.log("CALL: createMapLink() - set URL in textbox");
+  var vURL = "https://niebert.github.io/openlayer_display_markers/viewicons.html?";
+  var vMapCenter = el4id("mymapcenter").value;
+  console.log("vMapCenter='" + vMapCenter + "'");
+  vURL += "mapcenter=" + encodeURIComponent(vMapCenter);
+  vURL += "&zoom=" + encodeURIComponent(el4id("myzoom").value);
+  vURL += "&jsondata="+ encodeURIComponent(getDataJSON4Link());
+  el4id("maplink").value = vURL;
 }
 
 function populateDataJSON() {
   vEditor4JSON.saveLS(); // save JSON Data to Local Storage
   copyMapCenterZoom();
+  var vOut = getDataJSON4Link();
+  //document.getElementById('jsondata').value = JSON.stringify(vJSON,null,4);
+  document.getElementById('jsondata').value = encodeURIComponent(vOut);
+}
+
+function getDataJSON4Link() {
   var vData = vEditor4JSON.aData;
   var vOut = "";
   var vCR = "";
@@ -26,16 +53,15 @@ function populateDataJSON() {
       vOut += vCR + vRecOut;
       vCR = ",\n";
       if (vMapCenterMissing) {
-        el4id("mymapcenter").value = vData[i].geolocation;
+        el4id("mymapcenter").value = vData[i].lng+","+vData[i].lat;
         vMapCenterMissing = false;
       }
     };
   };
   vOut = "[" + vOut + "]";
-  //var vJSON = vData;
-  //document.getElementById('jsondata').value = JSON.stringify(vJSON,null,4);
-  document.getElementById('jsondata').value = vOut;
-};
+  return vOut
+}
+
 
 function getMarkerString(pNr,pRec) {
   var vOut = "";

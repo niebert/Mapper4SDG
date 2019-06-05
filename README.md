@@ -1,8 +1,9 @@
 # Mapper4SDG
 [Mapper4SDG](https://niebert.github.io/Mapper4SDG) Maps is designed Activities, Projects, Source, Repositories to the [UN Sustainable Development Goals SDGs](https://en.wikiversity.org/wiki/Sustainable_Development_Goals).
 
-[Mapper4SDG](https://niebert.github.io/Mapper4SDG) is an OpenSource tool developed for creating markers/icons with a info popup for the tagged geolocation on a map. The popup contains information about the [SDG-related activies](https://en.wikiversity.org/wiki/Sustainable_Development_Goals) at the geolocation marked on map with an icon. [Mapper4SDG](https://niebert.github.io/Mapper4SDG) is generated with [OpenLayers](https://www.openlayers.org) and the mapping source [OpenStreetMap](https://www.openstreetmap.org).
-:: <font size="+2"><a href="https://niebert.gihub.io/Markers4Map" target="githubdemo">Markers4Map Demo</a></font>
+[Mapper4SDG](https://niebert.github.io/Mapper4SDG) is an OpenSource tool developed for creating markers/icons with a info popup for the tagged geolocation on a map. The popup contains information about the [SDG-related activies](https://en.wikiversity.org/wiki/Sustainable_Development_Goals) at the geolocation marked on map with an icon. [Mapper4SDG](https://niebert.github.io/Mapper4SDG) is generated with [OpenLayers](https://www.openlayers.org) and as map source [OpenStreetMap](https://www.openstreetmap.org) was used.
+
+* <font size="+2"><a href="https://niebert.gihub.io/Markers4Map" target="githubdemo">Markers4Map Demo</a></font>
 
 The data for the markers, popups for the geolocation are stored in a JSON file and shared with others. Stored JSON data can be loaded from the WebApp [Markers4Map](https://niebert.gihub.io/Markers4Map).
 
@@ -18,7 +19,7 @@ Display of the markers is performend with the following package:
 
 ## Online Demo
 
-https://niebert.github.io/Mapper4SDG
+* https://niebert.github.io/Mapper4SDG
 
 ## Main Library for Large Arrays
 

@@ -21,6 +21,39 @@ Display of the markers is performend with the following package:
 
 * https://niebert.github.io/Mapper4SDG
 
+## JSON Data
+The JSON data has the following structure.
+```javascript
+vDataJSON["mapicons"] = [
+    {
+        "title4map": "London",
+        "geolocation": "-0.14467470703124907,51.493889053694915",
+        "SDG": [
+            "1",
+            "3"
+        ],
+        "url": "https://en.wikipedia.org/wiki/London",
+        "date": "3.9.2017, 07:03:16",
+        "comment": "London created a Open Innovation Ecosystem for SDG Clean Water and Sanitation"
+    },
+    {
+        "title4map": "Brimingham",
+        "geolocation": "-1.81185,51.243141",
+        "SDG": [
+            "7",
+            "3"
+        ],
+        "url": "https://en.wikipedia.org/wiki/Birmingham",
+        "date": "10.10.2017, 12:33:56",
+        "comment": "Birmingham created SDG-activities about SDG7 Clean and affordable Energy and SDG3 Health"
+    }
+]
+```
+The init data is defined in `docs/db/data.js` in a Javascript file, so that the data can be loaded with a default `script`-tag.
+
+## Load and Save data
+You can load and save data in the WebApp with the `Load` and `Save`. Saving the current work on the local harddrive as JSON file is always recommended because the processing of data is not stored on a server. Data is kept in the browser and is saved in the LocalStorage of the browser (see https://en.wikiversity.org/wiki/AppLSAC)
+
 ## Main Library for Large Arrays
 
 Main library to handle large arrays is `docs/js/editor4json.js`
